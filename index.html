@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html manifest="cache.manifest">
+<head>
+  <meta charset="UTF-8">
+  <title>PlayStation 4 MichaelCL13</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    /* Grid layout */
+
+    #website {
+      display: grid;
+      grid-template-areas: 'top' 'middle' 'bottom';
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr auto;
+      height: 100vh;
+    }
+
+    #website > header {
+      align-items: center;
+      background-color: var(--main-color);
+      border-color: var(--border-color);
+      border-style: none none solid;
+      border-width: 1px;
+      display: flex;
+      grid-area: top;
+      justify-content: space-between;
+    }
+
+    #website > main {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      grid-area: middle;
+      overflow: auto;
+      padding: 0 8px;
+      position: relative;
+    }
+
+    #website > footer {
+      background-color: var(--main-color);
+      border-color: var(--border-color);
+      border-style: solid none none;
+      border-width: 1px;
+      grid-area: bottom;
+      padding: 8px 0 0 8px;
+    }
+
+    /* Header */
+
+    #title {
+      color: var(--text-color);
+      font-size: x-large;
+      font-weight: bold;
+      padding: 8px;
+    }
+
+    #button_container {
+      align-items: stretch;
+      align-self: stretch;
+      display: flex;
+    }
+
+    #updateinfo {
+      align-self: center;
+      color: var(--text-color);
+      padding: 0 8px;
+    }
+
+    header button {
+      background-color: var(--main-color);
+      border: none;
+      color: var(--text-color);
+      font-size: large;
+      font-weight: bold;
+      margin: 0;
+      outline: none;
+      padding: 0 8px;
+    }
+
+    /* Tabs */
+
+    .tab {
+      background-color: var(--background-color);
+      border-color: var(--border-color);
+      border-style: none none solid solid;
+      border-width: 1px;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .tab_content {
+      padding: 8px 0 8px 8px;
+    }
+
+    .tab_title {
+      align-items: baseline;
+      display: flex;
+      font-size: x-large;
+      font-weight: bold;
+      justify-content: space-between;
+      padding: 8px;
+    }
+
+    /* Settings tab */
+
+    .tab_option_group {
+      border: 1px solid var(--border-color);
+      padding: 8px;
+      text-align: right;
+    }
+
+    .custom_payload_title {
+       width: 100px;
+    }
+
+    .custom_payload_payloads {
+       width: 500px;
+    }
+
+
+    /* Footer */
+
+    #payload_chain_area {
+      color: var(--text-color);
+      display: none;
+      font-size: medium;
+      margin: 0 8px 8px 0;
+    }
+
+    #payload_chain {
+      align-items: center;
+      background-color: var(--background-color);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-grow: 1;
+      padding: 0 6px;
+    }
+
+    #payload_chain_buttons > :first-child {
+      margin: 0 4px 0 8px;
+    }
+
+    #payload_chain_buttons > * {
+      margin: 0 4px 0 0;
+    }
+
+    #payload_chain_buttons > :last-child {
+      margin: 0;
+    }
+
+    #payload_info {
+      color: var(--text-color);
+      display: none;
+      font-size: medium;
+      margin: 0 8px 8px 0;
+    }
+
+    .payload_link {
+      color: var(--text-color);
+      display: inline-block; /* Undesired side-effect: this adds 4px additional horizontal margin between items */
+      font-size: medium;
+      font-weight: bold;
+      margin: 0 12px 8px 0; /* margin-right: taking the 4px into account */
+      text-decoration: none;
+    }
+
+    .payload_style_plain:hover {
+      text-decoration: underline;
+    }
+
+    .payload_style_underline {
+      text-decoration: underline;
+    }
+
+    .payload_style_button {
+      color: var(--text-color);
+      background-color: var(--main-color);
+      border: 1px solid var(--border-color);
+      margin-right: 4px;
+      padding: 4px 8px;
+    }
+
+    .payload_style_button_inverted {
+      background-color: var(--background-color);
+    }
+
+    .payload_style_button:hover {
+      background-color: var(--highlight-color);
+     }
+
+    .payload_style_button:active {
+      box-shadow: inset 0 0 5px var(--border-color);
+    }
+
+    .credits {
+      color: var(--border-color);
+      font-size: small;
+      margin: 0 8px 8px 0;
+    }
+
+    /* Standard UI elements modifications */
+
+    /* Reminder: Payloads are links and not buttons */
+    button {
+      background-color: var(--main-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      font-size: medium;
+      text-decoration: none;
+    }
+
+    button:hover {
+      background-color: var(--highlight-color);
+    }
+
+    button:active {
+      box-shadow: inset 0 0 5px var(--border-color);
+    }
+
+    input {
+      background-color: var(--background-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      font-size: medium;
+    }
+
+    input[type="checkbox"] {
+      text-decoration: none;
+      transform: scale(1.24);
+      transform-origin: right;
+    }
+
+    select {
+      background-color: var(--background-color);
+      border-color: var(--border-color);
+      color: var(--text-color);
+      font-size: medium;
+    }
+
+    ::-webkit-scrollbar {
+      width: 1em;
+    }
+
+    @font-face {
+      font-family: "monospace";
+      font-style: normal;
+      font-weight: 400;
+      src: url("courier-prime-v2-latin-regular.woff");
+    }
+
+    /* Hide firmware-specific elements */
+    .fw702,
+    .fw75x {
+      display: none;
+    }
+  </style>
+  <style id="scrollbar"></style>
+  <script>
+    // Firmware safety check to prevent system lockups
+    var useragent = navigator.userAgent;
+    if (useragent.substring(13,26) === "PlayStation 4") {
+      var firmware = useragent.substring(27,31);
+    } else {
+      alert("No está utilizando una PS4 para ver este sitio web. No haga clic en ninguno de los botones, o es probable que su sistema se crashee.\nEste sitio web sólo se utilizará con una PS4. ¡Proceda bajo su propio riesgo!");
+    }
+  </script>
+</head>
+<body>
+  <script src="changelog.js"></script>
+  <div id="website">
+    <header>
+      <span id="title">PlayStation 4 host 7.55 MichaelCL13</span>
+      <script>
+        // Show for which target firmware the website is made
+        document.title += " " + targetFirmware;
+        document.getElementById("title").innerHTML += " Para Sistema " + targetFirmware;
+        // Show current firmware if it differs
+        if (firmware !== undefined && firmware.substring(0,3) !== targetFirmware.substring(0,3)) {
+          document.getElementById("title").innerHTML += `<span style="color: var(--border-color)">  Current firmware:  ` + firmware;
+        }
+      </script>
+      <div id="button_container">
+        <div id="updateinfo"></div>
+        <script>
+          document.getElementById("updateinfo").innerHTML = sessionStorage.getItem("last_status");
+          sessionStorage.clear();
+          window.applicationCache.onprogress = function(a) {
+            let percentage = Math.round(a.loaded / a.total * 100);
+            document.getElementById("updateinfo").innerHTML = "Nuevo contenido encontrado. Actualización de caché: " + percentage + "%";
+          }
+          window.applicationCache.oncached = window.applicationCache.onupdateready = function() {
+            sessionStorage.setItem("last_status", "El sitio web ha sido actualizado.");
+            window.location.reload();
+          }
+        </script>
+        <button onclick="showTab('tab_changelog', event)">Cambios en Historial</button>
+        <button id="button_jailbreakhistory" style="display: none" onclick="showTab('tab_jailbreakhistory', event); loadJailbreakHistory()">Historial de Pirateo</button>
+        <button id="button_options" onclick="showTab('tab_options', event)">Configuración</button>
+        <script>
+          function hideTabs() {
+            let x;
+            // Hide all tabs
+            x = document.getElementsByClassName("tab");
+            for (let i = 0; i < x.length; i++) {
+              x[i].style.display = "none";
+            }
+            // Unpress all buttons
+            x = document.getElementsByTagName("button");
+            for (let i = 0; i < x.length; i++) {
+              x[i].style.boxShadow = "";
+              x[i].style.backgroundColor = "";
+            }
+          }
+
+          function showTab(id, event) {
+            let tab = document.getElementById(id);
+            if (tab.style.display == "block") {
+              // Hide tab if already open
+              tab.style.display = "none";
+              // Unpress button
+              event.target.style.boxShadow = "";
+              event.target.style.backgroundColor = "";
+            } else {
+              hideTabs();
+              // Show tab
+              tab.style.display = "block";
+              // Make button look pressed
+              event.target.style.boxShadow = "inset 0 0 5px var(--border-color)";
+              event.target.style.backgroundColor = "var(--highlight-color)";
+            }
+          }
+        </script>
+      </div>
+    </header>
+    <main>
+      <div id="instructions" style="overflow: hidden">
+        <noscript><span style="color: red">JavaScript is required to run the jailbreak. Press the OPTIONS button, go to "Settings" and check "Enable JavaScript", then refresh the web page.</span></noscript>
+        <h3>Instrucciones</h3>
+        <p>Esta página ahora está almacenada en caché en su navegador PS4. Puedes desconectar tu PS4 de Internet y, a partir de ahora, seguir usando el jailbreak sin conexión. Para facilitar esto, no dude en añadir un marcador..</p>
+        <p>Para jailbreak, haga clic en la carga útil que desea cargar. Siempre que todo vaya bien, en unos 20 segundos verás el mensaje "¡PlayStation 4 Pirateado!", seguido de "No hay suficiente memoria libre del sistema". Por lo general, sin embargo, necesitará varios intentos.</p>
+        <p><b>Pueden aparecer varios mensajes:</b>
+          <ul>
+            <li><b>"No hay suficiente memoria libre del sistema"</b>: Significa que el exploit WebKit no se realizó correctamente. Pulse "OK" para intentarlo de nuevo. Esto es normal, ya que la probabilidad de tener éxito es bastante baja.
+            <li><b>"Jailbreak falló! Reinicia tu PS4 e inténtalo de nuevo"</b>: El exploit kernel ha fallado y el sistema ya no es estable. Al intentar reiniciar, el sistema podría bloquearse, lo que parece un apagado instantáneo. Pulse el botón de encendido de la PS4 para encenderlo de nuevo. Se ejecutará una comprobación de disco y, a continuación, puede reanudar el pirateo.</li>
+            <li><b>"No se pudo configurar una primitiva de lectura relativa"</b>: Esto puede suceder cuando mueve los sticks analógicos del controlador mientras el exploit de WebKit todavía está tratando de tener éxito. No mueva los palos analógicos. Después de pulsar "OK", puede reanudar el pirateo sin reiniciar.</li>
+            <li><b>"PlayStation 4 Pirateado"</b>: El jailbreak tuvo éxito, y la carga útil seleccionada se ha cargado en la memoria.</li>
+          </ul>
+        </p>
+        <p>Cargar una carga útil HEN/GoldHEN o Mira desbloquea las aplicaciones de homebrew instaladas y permite "configuración de depuración": deje el navegador y vaya a "Configuración - *Configuración de depuración - Juego - Instalador de paquetes" para instalar archivos PKG de homebrew desde la carpeta raíz de un dispositivo de almacenamiento USB con formato exFAT<br>
+          <b>Una vez que haya habilitado la configuración de depuración, nunca vaya a "*Configuración de depuración - Sistema - Modo IDU", o su PS4 se bloqueará!</b><br>
+        </p>
+        <p>Para que el soporte del modo de descanso de GoldHEN funcione, asegúrese de habilitar "Mantener la aplicación suspendida" en "Configuración - Configuración de ahorro de energía - Consulte Características disponibles en modo de reposo".</p>
+        <p> MUCHAS GRACIAS POR USAR ESTE HOST..... MICHAELCL13 
+      </div>
+      <div class="tab" id="tab_changelog">
+        <div class="tab_title">Changelog<span id="tab_changelog_version" style="color: var(--border-color); font-size: medium; font-weight: normal"></span></div>
+        <div class="tab_content" id="changelog">
+          <script>
+            // Shows the changelog, replacing newlines with "<br>"
+            document.getElementById("changelog").innerHTML = changes.replace(/\n/g, "<br>");
+            document.getElementById("tab_changelog_version").innerHTML = "Release " + date + "#" + build;
+          </script>
+        </div>
+      </div>
+      <div class="tab" id="tab_jailbreakhistory">
+        <div class="tab_title">Historial de Pirateo<span id="tab_jailbreakhistory_stats" style="color: var(--border-color); font-size: medium; font-weight: normal; text-align: right"></span></div>
+        <div class="tab_content" id="historylog" style="font-family: 'monospace'">
+        </div>
+      </div>
+      <div class="tab" id="tab_options"> <!-- Checkboxes have the same ID name as the key they store -->
+        <div class="tab_title">Configuración</div>
+        <div class="tab_content" style="display: flex">
+          <div style="margin-right: 8px">
+            <!-- Wallpapers settings -->
+            <div style="font-size: large; font-weight: bold">Fondo de Pantalla</div>
+            <div class="tab_option_group" style="">
+              <label for="enable_wallpaper">Activar Fondo de Pantalla</label>
+              <input type="checkbox" id="enable_wallpaper" onclick="toggleEnableWallpaper()"><br>
+              <label for="select_wallpaper">Fondo de Pantalla:</label>
+              <select id="select_wallpaper" onchange="applyOptionEnableWallpaper()">
+                <option value="cache" selected>Offline cache</option>
+                <option value="aHR0cHM6Ly9iYXlpbWcuY29tL2QxMDYxMGJkZDY3MjcyOWNjZWQzNjhhYzg5NWRiMDQ4NmI4NmIwMTguanBnCg==">Assassin's Creed: Black Flag</option>
+                <option value="aHR0cHM6Ly9iYXlpbWcuY29tL2Q1MzgwNDJiMTM3MjY4NTQwZjE4MjQ5NzgyZmZiNmMxNWQwNGI0YjAuanBnCg==">Assassin's Creed: Valhalla #1</option>
+              </select><br>
+              <button id="button_cache_wallpaper" onclick="cacheWallpaper()" style="width: 100%">Cache de Fondo de Pantalla Seleccionado</button>
+              <button id="wallpaper_cache" onclick="deleteWallpaperCache()" style="width: 100%">Eliminar Cache sin Conexion</button> <!-- "Delete data" buttons have the same ID name as the key they delete -->
+            </div><br>
+            <!-- Jailbreak history settings -->
+            <div style="font-size: large; font-weight: bold">Historial del Pirateo</div>
+            <div class="tab_option_group" style="border: 1px solid var(--border-color); padding: 8px; text-align: right">
+              <label for="disable_jailbreak_history">Ocultar Historial del Pirateo</label>
+              <input type="checkbox" id="disable_jailbreak_history" onclick="toggleJailbreakHistory()"><br>
+              <label for="select_jailbreak_history_max">Cantidad de Lineas en Pantalla:</label>
+              <select id="select_jailbreak_history_max" onchange="setJailbreakHistoryMax(this.value)">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="100">100</option>
+              </select><br>
+              <button id="jailbreak_history" onclick="clearJailbreakHistory()" style="width: 100%">Eliminar datos del Historial del Jailbreak</button>
+            </div>
+          </div>
+          <!-- Miscellaneous setttings -->
+          <div style="margin-right: 8px">
+            <div style="font-size: large; font-weight: bold">Varios Ajustes</div>
+            <div class="tab_option_group" style="border: 1px solid var(--border-color); margin-bottom: 8px; padding: 8px; text-align: right">
+              <label for="disable_payload_info">Ocultar Informacion de los Payloads</label>
+              <input type="checkbox" id="disable_payload_info" onclick="togglePayloadInfo()"><br>
+              <label for="disable_youreallset">Desactivar "PlayStation 4 Pirateado" Mensajes</label>
+              <input type="checkbox" id="disable_youreallset" onclick="toggleYoureAllSet()"><br>
+              <label for="select_log_level">Nivel de Registros:</label>
+              <select id="select_log_level" onchange="setLogLevel(this.selectedIndex)">
+                <option value="0">0: Desactivar todos los Registros</option>
+                <option value="1">1: Registros durante el Jailbreak</option>
+                <option value="2">2: Activar Registros del Jailbreak</option>
+              </select><br>
+              <label for="select_webkit_exploit">Explotación de WebKit:</label>
+              <select id="select_webkit_exploit" onchange="setWebkitExploit(this.value)">
+                <option value="regular">Estandar</option>
+                <option value="mod">Modificada por sleirsgoevy</option>
+              </select><br>
+              <label class="fw75x" for="select_kernel_exploit">Explotación del kernel:</label>
+              <select class="fw75x" id="select_kernel_exploit" onchange="setKernelExploit(this.value)">
+                <option value="regular">Estandar</option>
+                <option value="2021-04-29">Nueva (2021-04-29)</option>
+                <option value="2021-05-03">Ultima (2021-05-03)</option>
+              </select><br class="fw755">
+              <label class="fw755" for="select_goldhen">Versión GoldHen:</label>
+              <select class="fw755" id="select_goldhen" ongchange="setGoldHenVersion(this.value)">
+                <option value="all">Mostrar Todos</option>
+                <option value="1.0_fw755">1.0 (FW 7.55)</option>
+                <option value="1.1_fw755">1.1 (FW 7.55)</option>
+              </select><br class="fw755">
+              <label for="select_payload_style">Estilo de Payload:</label>
+              <select id="select_payload_style" onchange="setPayloadStyle(this.selectedIndex)">
+                <option value="0">Texto</option>
+                <option value="1">Texto Subrayado text</option>
+                <option value="2">Botones</option>
+                <option value="3">Botones Invertidos</option>
+              </select><br>
+              <label for="select_payload_size">Tamaño del Payload:</label>
+              <select id="select_payload_size" onchange="setPayloadSize(this.value)">
+                <option value="medium">Mediano</option>
+                <option value="large">Grande</option>
+              </select><br>
+              <label for="select_color_scheme">Color de Tema:</label>
+              <select id="select_color_scheme" onchange="setColorScheme(this.value)">
+                <option value="gray">Gray</option>
+                <option value="midnightblue">midnightblue</option>
+                <option value="lavender">lavender</option>
+                <option value="sony">sony</option>
+              </select>
+            </div>
+            <button onclick="restoreDefaultSettings()" style="width: 100%">Restaurar configuracion predeterminada</button>
+          </div>
+        </div>
+      </div>
+      <!-- Custom payload options -->
+      <div class="tab" id="tab_custom_payloads" style="border-style: solid none none solid; bottom: 0; top: initial">
+        <!-- Custom payload chains -->
+        <div style="padding: 8px">
+          <div style="font-size: large; font-weight: bold">Custom payload chains</div>
+          <div class="tab_option_group" style="text-align: left">
+            <table>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Payloads*</th>
+              </tr>
+              <tr>
+                <td><input id="custom_1_enabled" onchange="saveCustomPayloadCheckbox(this.id)" type="checkbox"></td>
+                <td><input class="custom_payload_title" id="custom_1_title" onchange="saveCustomPayloadTitle(this.id)" value="Custom 1"></td>
+                <td><input class="custom_payload_payloads" id="custom_1_payloads"></td>
+                <td><button id="custom_1_save" onclick="saveCustomPayloadPayloads(this.id)">Save</button></td>
+              </tr>
+              <tr>
+                <td><input id="custom_2_enabled" onchange="saveCustomPayloadCheckbox(this.id)" type="checkbox"></td>
+                <td><input class="custom_payload_title" id="custom_2_title" onchange="saveCustomPayloadTitle(this.id)" value="Custom 2"></td>
+                <td><input class="custom_payload_payloads" id="custom_2_payloads"></td>
+                <td><button id="custom_2_save" onclick="saveCustomPayloadPayloads(this.id)">Save</button></td>
+              </tr>
+              <tr>
+                <td><input id="custom_3_enabled" onchange="saveCustomPayloadCheckbox(this.id)" type="checkbox"></td>
+                <td><input class="custom_payload_title" id="custom_3_title" onchange="saveCustomPayloadTitle(this.id)" value="Custom 3"></td>
+                <td><input class="custom_payload_payloads" id="custom_3_payloads"></td>
+                <td><button id="custom_3_save" onclick="saveCustomPayloadPayloads(this.id)">Save</button></td>
+              </tr>
+            </table>
+            <span>*To save a new payload list, select multiple payloads below and then press "Save".</span><br>
+            <button onclick="deleteCustomPayloads()">Delete all custom payload data</button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div>
+        <div id="payload_chain_area">
+          <span id="payload_chain">No payloads selected yet.</span>
+          <div id="payload_chain_buttons">
+            <button onclick="toggleAdvanced()">Opciones Avanzadas</button>
+            <button onclick="toggleChainRecording()">Cancelar</button>
+            <button onclick="launchPayloadChain()">Iniciar</button>
+          </div>
+        </div>
+        <div id="payload_info">Seleccione payload:</div>
+        <div class="fw75x payloadlist" onmouseout="resetPayloadInfo()">
+          <a class="payload_link custom_1" style="display: none"></a>
+          <a class="payload_link custom_2" style="display: none"></a>
+          <a class="payload_link custom_3" style="display: none"></a>
+          <a class="payload_link goldhen" href="javascript:selectPayload('payload.html#p0=goldhen-1.0_fw755.js')" onmouseover="showPayloadInfo('Habilita los homebrew y de depuración. Ignora las comprobaciones de firmware para ejecutar los últimos backports, proporciona la instalación remota de paquetes, inicia un servidor FTP (puerto 2121), habilita la depuración de trofeos y más.')">goldHen 1.0</a>
+          <a class="payload_link goldhen" href="javascript:selectPayload('payload.html#p0=goldhen-1.1_fw755.js')" onmouseover="showPayloadInfo('Habilita los homebrew y de depuración. Ignora las comprobaciones de firmware para ejecutar los últimos backports, proporciona la instalación remota de paquetes, inicia un servidor FTP (puerto 2121), habilita la depuración de trofeos y más')">goldHen 1.1</a>
+          <a class="payload_link" href="javascript:selectPayload('payload.html#p0=hen213b.js')" onmouseover="showPayloadInfo('Habilita los homebrew y de depuración. Simula la versión de firmware a 9.99 para ejecutar los últimos backports. ')">HEN 2.1.3b + spoof</a>
+          <a class="payload_link" href="javascript:selectPayload('payload.html#p0=dumper.js')" onmouseover="showPayloadInfo('Cargue la carga útil del Dumper, luego inicie un juego para extraer el juego y su actualización a un dispositivo de almacenamiento USB con formato exFAT. Asegúrese de no tener datos importantes en él.')">Dumper</a>
+          <a class="payload_link" href="javascript:selectPayload('payload.html#p0=linux-1gb.js')" onmouseover="showPayloadInfo('Carga Linux desde un dispositivo de almacenamiento USB preparado. Deja Linux con 7 GB de RAM, ya que 1 GB se utilizará para gráficos.')">Linux (1 GB)</a>
+          <a class="payload_link" href="javascript:selectPayload('payload.html#p0=linux-3gb.js')" onmouseover="showPayloadInfo('Carga Linux desde un dispositivo de almacenamiento USB preparado. Deja Linux con 5 GB de RAM, ya que se utilizarán 3 GB para gráficos. No utilice la carga útil de 3 GB durante la instalación.')">Linux (3 GB)</a>
+          <a class="payload_link" href="javascript:selectPayload('payload.html#p0=web-activator.js')" onmouseover="showPayloadInfo('Proporciona una página web para activar cuentas de usuario de PS4 locales sin conexión. Advertencia: active solo cuentas nuevas. No active cuentas que tengan partidas guardadas y trofeos.')">Activador Web</a>
+          <a class="payload_link" href="javascript:toggleChainRecording()" onmouseover="showPayloadInfo('Permite el encadenamiento de múltiples cargas útiles para ejecutarlas todas de una vez. Seleccione múltiples cargas útiles para encadenarlas, luego presione \ 'Iniciar\'.')">Multi payloads</a>
+        </div>
+      </div>
+      <div class="fw75x credits">Para todos los jugadores de PlayStation4 Pirata. MichaelCL13</div>
+    </footer>
+  </div>
+<script>
+/* OPTIONS/SETTINGS INITIALIZATION
+   ------------------------------------------------------------------------- */
+
+// Show firmware-specific elements
+{
+  let x = document.getElementsByClassName("fw" + targetFirmware.replace(".", ""));
+  for (let i = 0; i < x.length; i++) {
+    x[i].style.display = "initial";
+  }
+}
+
+// Initialize options
+initializeOptions();
+
+// Checks or unchecks checkboxes depending on existing localStorage data
+function initializeCheckbox(optionName) {
+  var checkbox = document.getElementById(optionName);
+  if (localStorage.getItem(optionName) == 1) {
+    checkbox.checked = true;
+  } else {
+    checkbox.checked = false;
+  }
+}
+
+// Sets all option elements depending on existing localStorage data
+function initializeOptions() {
+  applyOptionEnableWallpaper();
+  applyColorScheme();
+  applyOptionHideJailbreakHistory();
+  applyOptionHidePayloadInfo();
+  applyPayloadStyle();
+  applyPayloadSize();
+  applyGoldHenVersion();
+  initializeCheckbox("enable_wallpaper");
+  initializeCheckbox("disable_payload_info");
+  initializeCheckbox("disable_youreallset");
+  initializeCheckbox("disable_jailbreak_history");
+  loadCustomPayload("custom_1");
+  loadCustomPayload("custom_2");
+  loadCustomPayload("custom_3");
+  var index, val;
+  // Set log level dropdown menu
+  index = localStorage.getItem("jailbreak_log_level");
+  if (index === null) {
+    document.getElementById("select_log_level").selectedIndex = 2; // Default
+  } else {
+    document.getElementById("select_log_level").selectedIndex = index;
+  }
+  // Set WebKit exploit dropdown menu
+  val = localStorage.getItem("jailbreak_webkit_exploit");
+  if (val === null) {
+    document.getElementById("select_webkit_exploit").value = "regular"; // Default
+  } else {
+    document.getElementById("select_webkit_exploit").value = val;
+  }
+  // Set Kernel exploit dropdown menu
+  val = localStorage.getItem("jailbreak_kernel_exploit");
+  if (val === null) {
+    document.getElementById("select_kernel_exploit").value = "regular"; // Default
+  } else {
+    document.getElementById("select_kernel_exploit").value = val;
+  }
+  // Set payload style dropdown menu
+  index = localStorage.getItem("payload_style");
+  if (index === null) {
+    document.getElementById("select_payload_style").selectedIndex = 0; // Default
+  } else {
+    document.getElementById("select_payload_style").selectedIndex = index;
+  }
+  // Set payload size dropdown menu
+  val = localStorage.getItem("payload_size");
+  if (val === null) {
+    document.getElementById("select_payload_size").value = "medium" // Default
+  } else {
+    document.getElementById("select_payload_size").value = val;
+  }
+  // Set color scheme dropdown menu
+  val = localStorage.getItem("color_scheme");
+  if (val === null) {
+    document.getElementById("select_color_scheme").value = "gray"; // Default
+  } else {
+    document.getElementById("select_color_scheme").value = val;
+  }
+  // Set max lines to display in jailbreak history
+  val = localStorage.getItem("jailbreak_history_max");
+  if (val === null) {
+    document.getElementById("select_jailbreak_history_max").value = 10; // Default
+  } else {
+    document.getElementById("select_jailbreak_history_max").value = val;
+  }
+}
+
+/* OPTIONS/SETTINGS
+   ------------------------------------------------------------------------- */
+
+// Payload info
+
+function showPayloadInfo(text) {
+  document.getElementById("payload_info").textContent=text;
+}
+
+function resetPayloadInfo() {
+  document.getElementById("payload_info").textContent="Seleccione un payload:";
+}
+
+function applyOptionHidePayloadInfo() {
+  if (localStorage.getItem("disable_payload_info") != "1") {
+    document.getElementById("payload_info").style.display = "block";
+  } else {
+    document.getElementById("payload_info").style.display = "none";
+  }
+}
+
+function togglePayloadInfo() {
+  if (localStorage.getItem("disable_payload_info") != 1) {
+    localStorage.setItem("disable_payload_info", 1);
+  } else {
+    localStorage.removeItem("disable_payload_info");
+  }
+  applyOptionHidePayloadInfo();
+}
+
+// "You're all set"
+
+function toggleYoureAllSet() {
+  if (localStorage.getItem("disable_youreallset") != 1) {
+    localStorage.setItem("disable_youreallset", "1");
+  } else {
+    localStorage.removeItem("disable_youreallset");
+  }
+}
+
+// Wallpaper
+
+function cacheWallpaper(attempt = 0) {
+  var imageUrl = atob(document.getElementById("select_wallpaper").value);
+  if (imageUrl.startsWith("http")) { // Only cache online resources
+    let select = document.getElementById("select_wallpaper");
+    select.disabled = true;
+    let button = document.getElementById("button_cache_wallpaper");
+    button.disabled = true;
+    let oldInnerHTML = button.innerHTML;
+    if (attempt === 0) {
+      button.innerHTML = "Requesting data, please wait ...";
+    } else {
+      button.innerHTML = "Retrying (" + attempt + "), please wait ...";
+    }
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "https://cors.bridged.cc/" + imageUrl);
+    xhr.responseType = "arraybuffer";
+    // "Nothing happens" error
+    xhr.onerror = function() {
+      attempt++;
+      if (attempt === 10) {
+        alert("Caching failed after " + attempt + " attempts! Please try again later.");
+      } else {
+        cacheWallpaper(attempt);
+      }
+    };
+    // Show download progress
+    xhr.onprogress = (event) => {
+      button.innerHTML = "Caching, please wait ... " + Math.round(event.loaded / xhr.getResponseHeader("Content-Length") * 100) + "%";
+    };
+    // Cache when downloaded
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        var blob = new Blob([xhr.response], {type: "image/jpeg"});
+        var fileReader = new FileReader();
+        fileReader.onload = function(event) {
+          var result = event.target.result;
+          try {
+            localStorage.setItem("wallpaper_cache", result);
+            let size = result.length / 1000000;
+            alert("Wallpaper cached!\nImage size in cache: " + size.toFixed(2) + " MB");
+            select.selectedIndex = 0;
+            applyOptionEnableWallpaper();
+            initializeButton("wallpaper_cache");
+          }
+          catch (error) {
+            alert("Caching failed: " + error + "\nImage size (if it had been cached): " + size.toFixed(2) + " MB");
+          }
+        };
+        fileReader.readAsDataURL(blob);
+      } else {
+        alert("Error! Server response: " + xhr.status);
+      }
+    };
+    // Re-enable the button when finished
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        select.disabled = false;
+        button.disabled = false;
+        button.innerHTML = oldInnerHTML;
+      }
+    };
+    xhr.send();
+  } else {
+    return;
+  }
+}
+
+function toggleEnableWallpaper() {
+  if (localStorage.getItem("enable_wallpaper") != 1) {
+    localStorage.setItem("enable_wallpaper", "1");
+  } else {
+    localStorage.removeItem("enable_wallpaper");
+  }
+  applyOptionEnableWallpaper();
+}
+
+function applyOptionEnableWallpaper() {
+  if (localStorage.getItem("enable_wallpaper") == 1) {
+    enableWallpaperMode(document.getElementById("select_wallpaper").value);
+  } else {
+    disableWallpaperMode();
+  }
+}
+
+function deleteWallpaperCache() {
+  let x = confirm("Está seguro de que desea eliminar el caché sin conexión de su fondo de pantalla? ");
+  if (x == true) {
+    localStorage.removeItem("wallpaper_cache");
+
+    // Refresh wallpaper
+    document.getElementById("select_wallpaper").value = "cache";
+    applyOptionEnableWallpaper();
+
+    alert("Se ha eliminado la caché sin conexión del fondo de pantalla! ");
+  }
+}
+
+// Log level
+
+function setLogLevel(index) {
+  if (index == 2) { // Default
+    localStorage.removeItem("jailbreak_log_level");
+  } else {
+    localStorage.setItem("jailbreak_log_level", index);
+  }
+}
+
+// WebKit exploit
+
+function setWebkitExploit(value) {
+  if (value == "regular") { // Default
+    localStorage.removeItem("jailbreak_webkit_exploit");
+  } else {
+    localStorage.setItem("jailbreak_webkit_exploit", "mod");
+  }
+}
+
+// Kernel exploit
+
+function setKernelExploit(value) {
+  if (value == "regular") { // Default
+    localStorage.removeItem("jailbreak_kernel_exploit");
+  } else {
+    localStorage.setItem("jailbreak_kernel_exploit", value);
+  }
+}
+
+// Payload style
+
+function setPayloadStyle(index) {
+  if (index == 0) { // Default
+    localStorage.removeItem("payload_style");
+  } else {
+    localStorage.setItem("payload_style", index);
+  }
+  applyPayloadStyle();
+}
+
+function applyPayloadStyle() {
+  let payload = document.getElementsByClassName("payload_link");
+  let payload_style = localStorage.getItem("payload_style");
+  switch (payload_style) {
+    case null: // Plain
+      for (let i = 0; i < payload.length; i++) {
+        payload[i].classList.remove("payload_style_button", "payload_style_button_inverted", "payload_style_underline");
+        payload[i].classList.add("payload_style_plain");
+      }
+      break;
+    case "1": // Underline
+      for (let i = 0; i < payload.length; i++) {
+        payload[i].classList.remove("payload_style_button", "payload_style_button_inverted", "payload_style_plain");
+        payload[i].classList.add("payload_style_underline");
+      }
+      break;
+    case "2": // Button
+      for (let i = 0; i < payload.length; i++) {
+        payload[i].classList.remove("payload_style_plain", "payload_style_underline", "payload_style_button_inverted");
+        payload[i].classList.add("payload_style_button");
+      }
+      break;
+    case "3": // Button inverted
+      for (let i = 0; i < payload.length; i++) {
+        payload[i].classList.remove("payload_style_plain", "payload_style_underline");
+        payload[i].classList.add("payload_style_button", "payload_style_button_inverted");
+      }
+      break;
+  }
+}
+
+// Payload size
+
+function setPayloadSize(value) {
+  if (value == "medium") { // Default
+    localStorage.removeItem("payload_size");
+  } else {
+    localStorage.setItem("payload_size", value);
+  }
+  applyPayloadSize();
+}
+
+function applyPayloadSize() {
+  let x = document.getElementsByClassName("payload_link");
+  let payload_size = localStorage.getItem("payload_size");
+  if (payload_size === null) { // Default
+    for (let i = 0; i < x.length; i++) {
+      x[i].style.fontSize = "medium";
+    }
+  } else {
+    for (let i = 0; i < x.length; i++) {
+      x[i].style.fontSize = "large";
+    }
+  }
+}
+
+// GoldHEN
+
+function setGoldHenVersion(value) {
+  if (value == "all") { // Default
+    localStorage.removeItem("goldhen_version");
+  } else {
+    localStorage.setItem("goldhen_version", value);
+  }
+  applyGoldHenVersion();
+}
+
+function applyGoldHenVersion() {
+  let x = document.getElementById("select_goldhen");
+  let goldhen_version = localStorage.getItem("goldhen_version");
+  let a = document.querySelectorAll(".fw75x > .payload_link.goldhen");
+  if (goldhen_version === null) {
+    x.value = "all"; // Default
+    // Show all versions
+    for (let i = 0; i < a.length; i++) {
+      a[i].style.display = "inline-block";
+    }
+  } else {
+    x.value = goldhen_version;
+    for (let i = 0; i < a.length; i++) {
+      if (a[i].href.includes(goldhen_version)) {
+        // Only show the selected version
+        a[i].style.display = "inline-block";
+      } else {
+        // Hide all other versions
+        a[i].style.display = "none";
+      }
+    }
+  }
+}
+
+// Color scheme
+
+function setColorScheme(value) {
+  if (value == "gray") { // Default
+    localStorage.removeItem("color_scheme");
+  } else {
+    localStorage.setItem("color_scheme", value);
+  }
+  applyColorScheme();
+}
+
+function applyColorScheme() {
+
+  function setColors(main, highlight, border, text, background) {
+    let x = document.documentElement;
+    x.style.setProperty("--main-color", main);
+    x.style.setProperty("--highlight-color", highlight);
+    x.style.setProperty("--border-color", border);
+    x.style.setProperty("--text-color", text);
+    x.style.setProperty("--background-color", background);
+    // Scrollbar
+    x = document.getElementById("scrollbar");
+    scrollbar.innerHTML = "::-webkit-scrollbar-thumb{background-color:" + highlight + ";border:1px solid " + border + "}::-webkit-scrollbar-track{background-color:" + main + ";border: 1px solid " + border + ";border-style: none none none solid}";
+  }
+
+  let value = localStorage.getItem("color_scheme");
+  switch (value) {
+    case null:
+    case "gray": // Default
+      setColors("#404040", "#1084A5", "#A0A0A0", "#A0A0A0", "#383838");
+      break;
+    // Reminder: setColors(main, highlight, border/alternative text, text, background)
+    case "midnightblue":
+      setColors("midnightblue", "tomato", "#A9BBF1", "white", "royalblue");
+      break;
+    case "lavender":
+      setColors("lavender", "thistle", "darkorchid", "indigo", "#F5F5FA");
+      break;
+    case "sony":
+      setColors("#031E26", "#1084A5", "#7789FF", "#5FD8CA", "#031E26");
+      break;
+  }
+}
+
+// Custom payload chains (Settings)
+
+function toggleAdvanced() {
+  showTab("tab_custom_payloads", event);
+}
+
+function saveCustomPayloadCheckbox(id) {
+  id = id.substr(0, 8);
+  if (document.getElementById(id + "_enabled").checked === true) {
+    localStorage.setItem(id + "_enabled", "1");
+  } else {
+    localStorage.removeItem(id + "_enabled");
+  }
+  loadCustomPayload(id);
+}
+
+function saveCustomPayloadTitle(id) {
+  id = id.substr(0, 8);
+  let title = document.getElementById(id + "_title").value;
+  if (title !== "") {
+    localStorage.setItem(id + "_title", title);
+  } else {
+    localStorage.removeItem(id + "_title", title);
+  }
+  loadCustomPayload(id);
+}
+
+function saveCustomPayloadPayloads(id) {
+  id = id.substr(0, 8);
+  let payload_chain = document.getElementById("payload_chain");
+  if (payload_chain.innerHTML != "No payloads selected yet.") {
+    let payloads = payload_chain.innerHTML.split(/[, ]+/);
+    localStorage.setItem(id + "_payloads", JSON.stringify(payloads));
+  }
+  loadCustomPayload(id);
+}
+
+function loadCustomPayload(id) {
+  let customPayloadLink = document.querySelector(".fw" + targetFirmware.replace(".", "") + " > .payload_link" + "." + id);
+  // Title
+  let title = localStorage.getItem(id + "_title");
+  if (title !== null) {
+    document.getElementById(id + "_title").value = title;
+    // Link title
+    customPayloadLink.innerHTML = title;
+  } else {
+    title = id.charAt(0).toUpperCase() + id.slice(1);
+    customPayloadLink.innerHTML = title;
+    document.getElementById(id + "_title").value = title;
+  }
+  // Payloads
+  let payloads = JSON.parse(localStorage.getItem(id + "_payloads"));
+  if (payloads !== null) {
+    document.getElementById(id + "_payloads").value = payloads;
+    // Link href
+    let payloadLink = "payload.html";
+    for (let i = 0; i < payloads.length; i++) {
+      payloadLink += (i == 0 ? "#" : "&") + "p" + i + "=" + payloads[i];
+    }
+    customPayloadLink.href = payloadLink;
+    // Link mouseover
+    customPayloadLink.onmouseover = function() {
+      showPayloadInfo("Loads " + payloads.join(", ") + ".");
+    };
+  } else {
+    document.getElementById(id + "_payloads").value = null;
+    // Link href
+    customPayloadLink.href = "";
+    // Link mouseover
+    customPayloadLink.onmouseover = "";
+  }
+  // Checkbox
+  let checkbox = document.getElementById(id + "_enabled");
+  checkbox.checked = (localStorage.getItem(id + "_enabled") !== null);
+  // Show/hide link
+  if (checkbox.checked) {
+    customPayloadLink.style.display = "inline-block";
+  } else {
+    customPayloadLink.style.display = "none";
+  }
+}
+
+function deleteCustomPayloads() {
+  let customPayloadLink;
+  for (let i = 1; i < 4; i++) {
+    localStorage.removeItem("custom_" + i + "_title");
+    localStorage.removeItem("custom_" + i + "_payloads");
+    localStorage.removeItem("custom_" + i + "_enabled");
+    let customPayloadLink = document.querySelector(".fw" + targetFirmware.replace(".", "") + " > .payload_link" + "." + "custom_" + i);
+    customPayloadLink.href = "";
+    customPayloadLink.onmouseover = "";
+    loadCustomPayload("custom_" + i);
+  }
+}
+
+// Payload chains
+
+var isRecording = false; // Global
+function toggleChainRecording() {
+  isRecording = !isRecording;
+  let payload_chain_area = document.getElementById("payload_chain_area");
+  let payload_chain = document.getElementById("payload_chain");
+  if (isRecording === true) {
+    payload_chain_area.style.display = "flex";
+  } else {
+    hideTabs();
+    payload_chain_area.style.display = "none";
+  }
+  payload_chain.innerHTML = "Aún no se han seleccionado payloads.";
+}
+
+function launchPayloadChain() {
+  let payload_chain = document.getElementById("payload_chain");
+  if (payload_chain.innerHTML != "Aún no se han seleccionado payloads.") {
+    let payloads = payload_chain.innerHTML.split(/[, ]+/);
+    let payloadLink = "payload.html";
+    for (let i = 0; i < payloads.length; i++) {
+      payloadLink += (i == 0 ? "#" : "&") + "p" + i + "=" + payloads[i];
+    }
+    location.href = payloadLink;
+  }
+}
+
+function selectPayload(payloadLink) {
+  if (isRecording === true) {
+    let payload = payloadLink.substring(payloadLink.indexOf("=") + 1);
+    if (payload != payloadLink) { // Not Netcat
+      let payload_chain = document.getElementById("payload_chain");
+      let payloads = payload_chain.innerHTML.split(/[, ]+/);
+      if (payloads.includes(payload) === false) { // No duplicates
+        if (payload_chain.innerHTML == "No payloads selected yet.") {
+          payload_chain.innerHTML = payload;
+        } else {
+          payload_chain.innerHTML += ", " + payload;
+        }
+      }
+    }
+  } else {
+    location.href = payloadLink;
+  }
+}
+
+// Jailbreak history
+
+function setJailbreakHistoryMax(val) {
+  if (val == 10) { // Default
+    localStorage.removeItem("jailbreak_history_max");
+  } else {
+    localStorage.setItem("jailbreak_history_max", val);
+  }
+}
+
+function clearJailbreakHistory() {
+  let x = confirm("¿Está seguro de que desea eliminar los datos del historial de jailbreak?");
+  if (x == true) {
+    localStorage.removeItem("jailbreak_history");
+    alert("Se han eliminado los datos del historial de jailbreak.");
+    document.getElementById("tab_jailbreakhistory_stats").innerHTML = "";
+  }
+}
+
+function applyOptionHideJailbreakHistory() {
+  if (localStorage.getItem("disable_jailbreak_history") != 1) {
+    document.getElementById("button_jailbreakhistory").style.display = "inline";
+  } else {
+    document.getElementById("button_jailbreakhistory").style.display = "none";
+  }
+}
+
+function toggleJailbreakHistory() {
+  if (localStorage.getItem("disable_jailbreak_history") != 1) {
+    localStorage.setItem("disable_jailbreak_history", "1");
+  } else {
+    localStorage.removeItem("disable_jailbreak_history");
+  }
+  applyOptionHideJailbreakHistory();
+}
+
+// Deletes all saved localStorage items and restores websites' default settings
+function restoreDefaultSettings() {
+  { // Don't delete jailbreak history nor wallpaper cache, as they have a separate delete button
+    let jailbreak_history = localStorage.getItem("jailbreak_history");
+    let wallpaper_cache = localStorage.getItem("wallpaper_cache");
+    localStorage.clear();
+    localStorage.setItem("jailbreak_history", jailbreak_history);
+    localStorage.setItem("wallpaper_cache", wallpaper_cache);
+  }
+  initializeOptions();
+}
+
+/* FEATURE IMPLEMENTATIONS
+   ------------------------------------------------------------------------- */
+
+/* JAILBREAK HISTORY
+   ----------------- */
+
+// Puts zeroes in front of numbers
+const zerofy = (number) => String(number).padStart(2, '0');
+
+// Clean up and, if jailbreak history enabled, log the last jailbreak
+{
+  let jailbreak_start_date = localStorage.getItem("jailbreak_start_date");
+  if (jailbreak_start_date !== null) {
+    let logLevel = localStorage.getItem("jailbreak_log_level");
+    if (logLevel === null) { // Means "level 2"
+      let jailbreak_last_date = localStorage.getItem("jailbreak_last_date");
+      let elapsedTime = (jailbreak_last_date - jailbreak_start_date);
+      let hours = Math.floor(elapsedTime / 1000 / 60 / 60);
+      let minutes = Math.floor(elapsedTime / 1000 / 60 - hours * 60);
+      let seconds = Math.floor(elapsedTime / 1000 - minutes * 60);
+      let jailbreak_attempts = localStorage.getItem("jailbreak_attempts");
+      let jailbreak_payload = localStorage.getItem("jailbreak_payload");
+      let jailbreak_history = JSON.parse(localStorage.getItem("jailbreak_history"));
+      if (jailbreak_history === null) { jailbreak_history = []; }
+      if (jailbreak_payload === null) { jailbreak_payload = "Netcat"; }
+      let jailbreak_stage = localStorage.getItem("jailbreak_stage");
+      let reason;
+      switch (jailbreak_stage) {
+        case "0":
+          reason = "El exploit WebKit falló";
+          break;
+        case "1":
+          reason = "El exploit WebKit falló";
+          break;
+        case "2":
+          reason = "Pirateo Exitoso*";
+          break;
+        case "3":
+          reason = "Pirateo Exitoso";
+          break;
+        default:
+          reason = "Sesión interrumpida";
+      }
+      let logDate = new Date(parseInt(jailbreak_last_date));
+      let historyNewEntry = "[" + logDate.getFullYear() + "-" + zerofy(logDate.getMonth() + 1) + "-" + zerofy(logDate.getDate()) + " " + zerofy(logDate.getHours()) + ":" + zerofy(logDate.getMinutes()) + "] " + reason + ", payload: " + jailbreak_payload + ", attempts: " + jailbreak_attempts + ", time: " + zerofy(hours) + ":" + zerofy(minutes) + ":" + zerofy(seconds);
+      jailbreak_history.unshift(historyNewEntry);
+      localStorage.setItem("jailbreak_history", JSON.stringify(jailbreak_history));
+    }
+    localStorage.removeItem("jailbreak_start_date");
+    localStorage.removeItem("jailbreak_last_date");
+    localStorage.removeItem("jailbreak_attempts");
+    localStorage.removeItem("jailbreak_payload");
+    localStorage.removeItem("jailbreak_stage");
+  }
+}
+
+// Loads recorded history of previous jailbreak attempts, writing it into the history tab
+function loadJailbreakHistory() {
+  var jailbreak_history = JSON.parse(localStorage.getItem("jailbreak_history"));
+  if (jailbreak_history === null) {
+    jailbreak_history = ["No jailbreaks recorded yet."];
+  } else {
+    // Calculate and output statistics
+    var successCount = 0, totalTime = 0, totalAttempts = 0, successAttempts = 0, kernelFailCount = 0, attempts, time, hours, minutes, seconds;
+    for (var i = 0; i < jailbreak_history.length; i++) {
+      if (/Jailbreak successful/.test(jailbreak_history[i])) {
+        successCount++;
+        attempts = jailbreak_history[i].match(/ttempts: .*,/);
+        attempts = parseInt(attempts[0].match(/ [^,]+/));
+        totalAttempts += attempts;
+        successAttempts += attempts;
+        time = jailbreak_history[i].match(/..:..:../);
+        time = time[0];
+        hours = parseInt(time.substr(0, 2));
+        minutes = parseInt(time.substr(3, 2));
+        seconds = parseInt(time.substr(6, 2));
+        totalTime += hours * 60 * 60 + minutes * 60 + seconds;
+        if (/Jailbreak successful*/.test(jailbreak_history[i])) {
+          footnote = true;
+        }
+      } else if (/WebKit exploit failed/.test(jailbreak_history[i])) {
+        attempts = jailbreak_history[i].match(/ttempts: .*,/);
+        attempts = parseInt(attempts[0].match(/ [^,]+/));
+        totalAttempts += attempts;
+      } else if (/Kernel exploit failed/.test(jailbreak_history[i])) {
+        kernelFailCount++;
+        attempts = jailbreak_history[i].match(/ttempts: .*,/);
+        attempts = parseInt(attempts[0].match(/ [^,]+/));
+        totalAttempts += attempts;
+      }
+    }
+    if (successCount > 0) {
+      var averageAttempts = successAttempts / successCount;
+      var averageTime = totalTime / successCount;
+      var webKitSuccessRate = ((successCount + kernelFailCount ) / totalAttempts * 100).toFixed(2);
+      var kernelSuccessRate = (successCount / (successCount + kernelFailCount) * 100).toFixed(2);
+      hours = zerofy(Math.floor(averageTime / 60 / 60));
+      minutes = zerofy(Math.floor(averageTime / 60 - hours * 60));
+      seconds = zerofy(Math.floor(averageTime - minutes * 60));
+      averageTime = hours + ":" + minutes + ":" + seconds;
+      document.getElementById("tab_jailbreakhistory_stats").innerHTML = "Promedio de Intentos: " + averageAttempts.toFixed(2) + ", average time: " + averageTime + "<br>Tasa de éxito de exploits de WebKit : " + webKitSuccessRate + "%, Tasa de éxito de explotación del kernel : " + kernelSuccessRate + "%";
+    }
+  }
+
+  // Print the jailbreak history
+  var max = localStorage.getItem("jailbreak_history_max"); // Apply max lines to show
+  if (max === null) {
+    if (jailbreak_history.length > 10) jailbreak_history.length = 10;
+  } else {
+    if (jailbreak_history.length > max) jailbreak_history.length = max;
+  }
+  let jailbreak_history_output = jailbreak_history.join("<br>"); // Adding linebreaks
+  document.getElementById("historylog").innerHTML = jailbreak_history_output;
+  if (jailbreak_history_output.includes("*")) {
+    document.getElementById("historylog").innerHTML += "<br><br>*No hay comentarios de la carga útil.";
+  }
+}
+
+/* WALLPAPERS
+   ---------- */
+
+// Loads a wallpaper and displays it
+function loadWallpaper(imageUrl) {
+  if (imageUrl == "cache") {
+    imageUrl = localStorage.getItem("wallpaper_cache");
+    if (imageUrl === null) {
+      disableWallpaperMode();
+      return false;
+    }
+  } else {
+    if (!imageUrl.startsWith("wallpapers")) {
+      imageUrl = atob(imageUrl);
+    }
+    var image = new Image();
+    image.src = imageUrl;
+    image.onerror = function() {
+      disableWallpaperMode();
+    }
+  }
+  document.body.style.backgroundImage = "url(" + imageUrl + ")";
+  return true;
+}
+
+// Hides various elements/changes their opacity for optimum wallpaper experience, and sets a wallpaper
+function enableWallpaperMode(imageUrl) {
+  if (loadWallpaper(imageUrl) === true) {
+    document.body.style.backgroundSize = "cover";
+    document.querySelector(".credits" + ".fw" + targetFirmware.replace(".", "")).style.display = "none";
+    document.getElementById("website").style.opacity = "0.8";
+    document.getElementById("instructions").style.display = "none";
+    document.querySelector("main").style.backgroundColor = "transparent";
+  }
+}
+
+// Removes the wallpaper and resets the website's looks to default
+function disableWallpaperMode() {
+  document.getElementById("instructions").style.display = "block";
+  document.getElementById("website").style.opacity = "1.0";
+  document.querySelector(".credits" + ".fw" + targetFirmware.replace(".", "")).style.display = "block";
+  document.body.style.backgroundImage = "none";
+  document.querySelector("main").style.backgroundColor = "var(--background-color)";
+}
+</script>
+</body>
+</html>

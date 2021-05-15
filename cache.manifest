@@ -1,0 +1,32 @@
+CACHE MANIFEST
+# random: 1a5a438edcfc9070c85dc914c9f400e1
+
+CACHE:
+blob.js
+changelog.js
+courier-prime-v2-latin-regular.woff
+dumper.js
+frontend.js
+goldhen-1.0_fw755.js
+goldhen-1.1_fw755.js
+hen213b.js
+history-blocker.js
+index.html
+jb_2021-04-29.js
+jb_2021-05-03.js
+jb.js
+linux-1gb.js
+linux-3gb.js
+mira.js
+netcat.js
+payload.html
+web-activator.js
+webkit/index.html
+webkit/int64.js
+webkit/ps4.js
+webkit/ps4_mod.js
+webkit/utils.js
+
+NETWORK:
+*
+
