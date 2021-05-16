@@ -1,6 +1,7 @@
 <html>
 <style>
   body {
+    background-image: url('img.jpg');
     height: 100%;
     margin: 16px;
     overflow: hidden;
@@ -159,7 +160,7 @@
   // Text output
   {
     let title = document.getElementById("title");
-    title.innerHTML = "Pirateando con payload" + (jailbreak_payload.includes(",") ? "s" : "") + " \"" + (jailbreak_payload === null ? "Netcat" : jailbreak_payload) + "\"";
+    title.innerHTML = "Inyectando payload" + (jailbreak_payload.includes(",") ? "s" : "") + " \"" + (jailbreak_payload === null ? "Netcat" : jailbreak_payload) + "\"";
 
     // Create log area (which is also used by function "debug_log" from script utils.js)
     var logArea = document.getElementById("log_area");
@@ -178,8 +179,8 @@
       case "lavender":
         color = "indigo"; backgroundColor = "#F5F5FA"; titleBackgroundColor = "lavender"; borderColor = "darkorchid";
         break;
-      case "wheat":
-        color = "maroon"; backgroundColor = "#FFFBF2"; titleBackgroundColor = "wheat"; borderColor = "saddlebrown";
+      case "sony":
+        color = "#5FD8CA"; backgroundColor = "#7789FF"; titleBackgroundColor = "#031E26"; borderColor = "#7789FF";
         break;
     }
     container.style.borderColor = borderColor;
